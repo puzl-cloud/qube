@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [ dev, main ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: [self-hosted, docker]
+    steps:
+      - uses: puzl-ee/checkout@v2
+        with:
+          clean: false
+          fetch-depth: 0
+      - name: Publish image
+        env:
+          DOCKER_REPO: puzlcloud
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          VERSION=$(jq -r .version ./package.json)
+          docker build -t ${DOCKER_REPO}/${GITHUB_REPOSITORY/*\/}:${VERSION}-${GITHUB_REF/*\/} .
+          docker push ${DOCKER_REPO}/${GITHUB_REPOSITORY/*\/}:${VERSION}-${GITHUB_REF/*\/}
+      - name: Trigger pipeline
+        env:
+          TOKEN: ${{ secrets.TOKEN }}
+          URL: ${{ secrets.URL }}
+        run: |
+          curl -s -o /dev/null -w "%{http_code}" -X POST -F "token=${TOKEN}" -F "ref=${GITHUB_REF/*\/}" -F "variables[SOURCE]=github" ${URL}
+        
