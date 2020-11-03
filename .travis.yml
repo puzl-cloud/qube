@@ -20,4 +20,4 @@ script:
   - VERSION=$(jq -r .version ./package.json)
   - docker build -t ${DOCKER_REPO}/${TRAVIS_REPO_SLUG/*\/}:${VERSION}-${TRAVIS_BRANCH} .
   - docker push ${DOCKER_REPO}/${TRAVIS_REPO_SLUG/*\/}:${VERSION}-${TRAVIS_BRANCH}
-  - curl -s -o /dev/null -w "%{http_code}" -X POST -F token=${TOKEN} -F ref=${TRAVIS_BRANCH} ${URL}
+  - curl -s -o /dev/null -w "%{http_code}" -X POST -F "token=${TOKEN}" -F "ref=${TRAVIS_BRANCH}" -F "variables[SOURCE]=github" ${URL}
