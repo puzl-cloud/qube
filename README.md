@@ -12,7 +12,7 @@ GraphQL schema is dynamically built from the openapi/swagger API specification e
 
 ## Authorization
 
-qube supports the `Bearer` token auth flow as Kubernetes API. Set `Authorization` header with your Kubernetes account token to pass the request.
+qube supports the `Bearer` token auth flow in the same manner as Kubernetes API. Set `Authorization` header with your Kubernetes account token to pass the request.
 
 ## Running
 
