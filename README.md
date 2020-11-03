@@ -41,3 +41,52 @@ Navigate to http://localhost:49020/ in your browser - this will launch the Graph
 `USE_JWT_AUTH` - `bool`, set to `false` if you do not want to proxify client `Authorization` header to Kubernetes
 
 > **Notice:** In case of `USE_JWT_AUTH=false` default token (or `KUBE_SCHEMA_TOKEN`) will be used for all user requests, which can be unsecure.
+
+## Examples
+### Create namespaced Secret
+Query
+```graphql
+mutation CreateSecretMutation($namespace: String!, $name: String!, $data: JSON) {
+  createCoreV1NamespacedSecret(namespace: $namespace, ioK8sApiCoreV1SecretInput: {kind: "Secret", stringData: $data, metadata: {name: $name}}) {
+    data
+    type
+    metadata {
+      name
+    }
+  }
+}
+```
+Variables
+```json
+{
+  "data": {"key": "value"},
+  "namespace": "my-namespace",
+  "name": "my-secret"
+}
+```
+### Get namespaced pods
+Query
+```graphql
+query GetPodsQuery($namespace: String!) {
+  ioK8sApiCoreV1PodList(namespace: $namespace) {
+    items {
+      metadata {
+        name
+      }
+      spec {
+        hostname
+        containers {
+          image
+          name
+        }
+      }
+    }
+  }
+}
+```
+Variables
+```json
+{
+  "namespace": "my-namespace"
+}
+```
