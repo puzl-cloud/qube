@@ -2,7 +2,7 @@
 
 qube is a GraphQL API provider for your Kubernetes cluster. It's working as a separate proxy above native Kubernetes API.
 
-GraphQL schema is dynamically built from the openapi/swagger API specification exposed by the Kubernetes cluster. Demo 
+GraphQL schema is dynamically built from the openapi/swagger API specification exposed by the Kubernetes cluster. 
 
 ## What GraphQL primitives are working now
 
