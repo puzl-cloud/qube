@@ -56,11 +56,11 @@ async function readFile(path) {
     }
   }
 
-// Open API spec may have ambiguos `consumes` types, we better to remove them at all
+// Open API spec may have ambiguous `consumes` types, we better to remove them at all
 function fixConsumes(openAPISchema) {
     Object.keys(openAPISchema).forEach(function (key) {
         if (typeof openAPISchema[key] === 'object') {
-            if (key == "consumes" && Array.isArray(openAPISchema[key]) && !openAPISchema[key].includes("application/json")) {
+            if (key === "consumes" && Array.isArray(openAPISchema[key]) && !openAPISchema[key].includes("application/json")) {
               delete openAPISchema[key];
             } else {
               return fixConsumes(openAPISchema[key]);
