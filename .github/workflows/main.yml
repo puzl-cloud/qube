@@ -28,3 +28,4 @@ jobs:
           context: .
           push: true
           tags: puzlcloud/qube:0.1.2-dev
+
