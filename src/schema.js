@@ -30,8 +30,7 @@ async function oasToGraphQlSchema(oas, kubeApiUrl, token) {
             baseUrl: kubeApiUrl,
             viewer: false,
             headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                Authorization: `Bearer ${token}`
             },
         });
         return schema;
@@ -60,7 +59,11 @@ async function readFile(path) {
 function fixConsumes(openAPISchema) {
     Object.keys(openAPISchema).forEach(function (key) {
         if (typeof openAPISchema[key] === 'object') {
-            if (key === "consumes" && Array.isArray(openAPISchema[key]) && !openAPISchema[key].includes("application/json")) {
+            if (key === "consumes" 
+                && Array.isArray(openAPISchema[key]) 
+                && !openAPISchema[key].includes("application/json") 
+                && !openAPISchema[key].includes("application/json-patch+json")
+            ) {
               delete openAPISchema[key];
             } else {
               return fixConsumes(openAPISchema[key]);
