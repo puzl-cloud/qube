@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:12
 
 ENV NODE_EXTRA_CA_CERTS=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
     UID=1000 \
