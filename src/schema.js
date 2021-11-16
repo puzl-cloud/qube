@@ -61,7 +61,11 @@ function fixConsumes(openAPISchema) {
         if (typeof openAPISchema[key] === 'object') {
             if (key === "consumes" 
                 && Array.isArray(openAPISchema[key]) 
+
+                // General requests
                 && !openAPISchema[key].includes("application/json") 
+
+                // Default patch strategy
                 && !openAPISchema[key].includes("application/json-patch+json")
             ) {
               delete openAPISchema[key];
