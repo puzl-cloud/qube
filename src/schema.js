@@ -59,15 +59,7 @@ async function readFile(path) {
 function fixConsumes(openAPISchema) {
     Object.keys(openAPISchema).forEach(function (key) {
         if (typeof openAPISchema[key] === 'object') {
-            if (key === "consumes" 
-                && Array.isArray(openAPISchema[key]) 
-
-                // General requests
-                && !openAPISchema[key].includes("application/json") 
-
-                // Default patch strategy
-                && !openAPISchema[key].includes("application/json-patch+json")
-            ) {
+            if (key === "consumes" && Array.isArray(openAPISchema[key]) && openAPISchema[key].includes("*/*")) {
               delete openAPISchema[key];
             } else {
               return fixConsumes(openAPISchema[key]);
