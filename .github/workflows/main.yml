@@ -27,5 +27,5 @@ jobs:
         with:
           context: .
           push: true
-          tags: puzlcloud/qube:0.1.5-dev
+          tags: puzlcloud/qube:0.1.5-1-dev
 
