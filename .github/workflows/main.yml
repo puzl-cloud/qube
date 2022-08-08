@@ -13,6 +13,9 @@ jobs:
         with:
           clean: false
           fetch-depth: 0
+      - name: Set app version
+        id: version
+        run: echo ::set-output name=docker_tag::$(sed -nr 's/.*"version":\ "(.*)",/\1/p' package.json)-${GITHUB_REF}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -27,5 +30,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: puzlcloud/qube:0.1.5-1-dev
-
+          tags: puzlcloud/qube:${{ steps.version.outputs.docker_tag }}
