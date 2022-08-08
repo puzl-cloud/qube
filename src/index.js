@@ -14,7 +14,7 @@ async function main() {
     const inCluster = process.env.IN_CLUSTER !== 'false';
     logger.info({inCluster}, "cluster mode configured");
     const kubeApiUrl = inCluster ? 'https://kubernetes.default.svc' : process.env.KUBERNETES_HOST;
-    const token = inCluster ? await fs.readFile('/var/run/secrets/kubernetes.io/serviceaccount/token', 'utf8') : process.env.KUBE_SCHEMA_TOKEN;
+    const token = `Bearer ${inCluster ? await fs.readFile('/var/run/secrets/kubernetes.io/serviceaccount/token', 'utf8') : process.env.KUBE_SCHEMA_TOKEN}`;
     const LISTEN_PORT = process.env.LISTEN_PORT || 49020;
 
     let oas;
