@@ -39,6 +39,8 @@ async function oasToGraphQlSchema(oas, kubeApiUrl, token) {
         const {schema} = await createGraphQLSchema(oas, {
             baseUrl: kubeApiUrl,
             viewer: false,
+
+            // Notice! You must pass header without `Bearer ` prefix, because generator adds it on its own ffs... https://github.com/IBM/openapi-to-graphql/blob/master/packages/openapi-to-graphql/src/resolver_builder.ts#L1015
             tokenJSONpath: "$.token"
         });
         return schema;

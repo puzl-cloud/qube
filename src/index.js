@@ -33,7 +33,7 @@ async function main() {
         server = new ApolloServer({
             schema,
             context: ({ req }) => {
-                if(req.headers.authorization.length > 0) {
+                if(req.headers.authorization && req.headers.authorization.length > 0) {
                     const strs = req.headers.authorization.split(' ');
                     var user = {};
                     user.token = strs[0];
