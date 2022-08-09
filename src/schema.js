@@ -30,7 +30,7 @@ async function oasToGraphQlSchema(oas, kubeApiUrl, token) {
             baseUrl: kubeApiUrl,
             viewer: false,
             headers: {
-                Authorization: `Bearer ${token}`
+                Authorization: token
             },
         });
         return schema;
@@ -39,6 +39,8 @@ async function oasToGraphQlSchema(oas, kubeApiUrl, token) {
         const {schema} = await createGraphQLSchema(oas, {
             baseUrl: kubeApiUrl,
             viewer: false,
+
+            // Notice! You must pass header without `Bearer ` prefix, because generator adds it on its own ffs... https://github.com/IBM/openapi-to-graphql/blob/master/packages/openapi-to-graphql/src/resolver_builder.ts#L1015
             tokenJSONpath: "$.token"
         });
         return schema;
@@ -78,7 +80,7 @@ async function getOpenAPISpecFromURL(url, token) {
             baseUrl: url,
             json: true,
             timeout: 5 * 1000,
-            headers: {Authorization: `Bearer ${token}`},
+            headers: {Authorization: token},
         }).then(r => {
             logger.info({url, path: p}, "successfully retrieved open api spec from this path")
             return r.body
