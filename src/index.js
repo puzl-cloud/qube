@@ -16,12 +16,24 @@ async function main() {
     const kubeApiUrl = inCluster ? 'https://kubernetes.default.svc' : process.env.KUBERNETES_HOST;
     const token = `Bearer ${inCluster ? await fs.readFile('/var/run/secrets/kubernetes.io/serviceaccount/token', 'utf8') : process.env.KUBE_SCHEMA_TOKEN}`;
     const LISTEN_PORT = process.env.LISTEN_PORT || 49020;
+    const REMOVE_PATHS = process.env.REMOVE_PATHS ? process.env.REMOVE_PATHS.split(',').map(path => path.trim()) : [];
 
     let oas;
     if (process.env.API_SCHEMA_FILE_PATH) {
         oas = await getSchemaFromFile(process.env.API_SCHEMA_FILE_PATH);
     } else {
         oas = await getSchemaFromAPI(kubeApiUrl, token);
+    }
+
+    // Remove specified paths from the schema object
+    if (REMOVE_PATHS.length > 0 && oas && oas.paths) {
+        REMOVE_PATHS.forEach(pathToRemove => {
+            Object.keys(oas.paths).forEach(key => {
+                if (key.startsWith(pathToRemove)) {
+                    delete oas.paths[key];
+                }
+            });
+        });
     }
 
     useJWTauth = process.env.USE_JWT_AUTH !== 'false';

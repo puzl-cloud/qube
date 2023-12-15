@@ -40,6 +40,8 @@ Navigate to http://localhost:49020/ in your browser - this will launch the Graph
 
 `USE_JWT_AUTH` - `bool`, set to `false` if you do not want to proxify client `Authorization` header to Kubernetes
 
+`REMOVE_PATHS` - `string`, contains a comma-separated list of path strings that should be removed from the OpenAPI Specification (OAS) object. It's useful for dynamically excluding certain API endpoints or paths based on runtime configuration.
+
 > **Notice:** In case of `USE_JWT_AUTH=false` default token (or `KUBE_SCHEMA_TOKEN`) will be used for all user requests, which can be unsecure.
 
 ## Examples
