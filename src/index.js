@@ -29,7 +29,7 @@ async function main() {
     if (REMOVE_PATHS.length > 0 && oas && oas.paths) {
         REMOVE_PATHS.forEach(pathToRemove => {
             Object.keys(oas.paths).forEach(key => {
-                if (key.includes(pathToRemove)) {
+                if (key.startsWith(pathToRemove)) {
                     delete oas.paths[key];
                 }
             });
